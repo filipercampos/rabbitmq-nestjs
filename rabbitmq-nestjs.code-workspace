@@ -1,10 +1,10 @@
 {
   "folders": [
     {
-      "path": "consumer-email"
+      "path": "consumer"
     },
     {
-      "path": "producer-email"
+      "path": "producer"
     }
   ],
   "settings": {}

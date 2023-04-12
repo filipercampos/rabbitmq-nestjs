@@ -2,9 +2,9 @@ version: '3.9'
 services:
   consumer:
     restart: unless-stopped
-    container_name: 'consumer-email'
+    container_name: 'consumer-nestjs'
     build:
-      context: ./consumer-email
+      context: ./consumer
       dockerfile: ./dockerfile
     environment:
       - NODE_ENV=development  
@@ -20,9 +20,9 @@ services:
       - rabbitmq_network        
   producer:
     restart: unless-stopped    
-    container_name: 'producer-email'    
+    container_name: 'producer-nestjs'    
     build:
-      context: ./producer-email
+      context: ./producer
       dockerfile: ./dockerfile
     environment:
       - PORT=3333
@@ -42,7 +42,7 @@ services:
       - rabbitmq_network        
   mongo:
     image: mongo
-    container_name: mongormq
+    container_name: mongo
     restart: always
     hostname: mongo
     environment:
