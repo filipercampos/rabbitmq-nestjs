@@ -1,2 +1,2 @@
-/**RMQ Queue */
-export const RMQ_QUEUE_EMAIL = 'QUEUE_EMAIL';
+/**Time seconds */
+export const TIMEOUT_SECONDS = 120000;

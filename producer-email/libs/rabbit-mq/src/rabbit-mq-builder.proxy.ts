@@ -8,14 +8,22 @@ import { Configuration } from 'src/infra/config/configuration';
 
 @Injectable()
 export class RabbitMqBuilderProxy {
-  static createEmailClientProxy(): ClientProxy {
+  /**
+   * Builder ClientProxy for Broker
+   */
+  public static register(queue: string) {
     const config = Configuration.config.rabbitmq;
     return ClientProxyFactory.create({
       transport: Transport.RMQ,
       options: {
         urls: [config.toString()],
-        queue: config.queueEmail,
+        queue: queue,
+        queueOptions: { durable: true },
       },
     });
+  }
+  static registerContact(): ClientProxy {
+    const config = Configuration.I.rabbitmq;
+    return RabbitMqBuilderProxy.register(config.queueContact);
   }
 }

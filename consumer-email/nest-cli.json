@@ -10,15 +10,6 @@
       "compilerOptions": {
         "tsConfigPath": "libs/email/tsconfig.lib.json"
       }
-    },
-    "proxies": {
-      "type": "library",
-      "root": "libs/proxies",
-      "entryFile": "index",
-      "sourceRoot": "libs/proxies/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/proxies/tsconfig.lib.json"
-      }
     }
   },
   "compilerOptions": {

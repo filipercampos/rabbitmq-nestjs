@@ -2,17 +2,17 @@ import * as dotenv from 'dotenv';
 import { AppConfig } from './app.config';
 import { Configuration } from './configuration';
 /**
- * Inicialização a configuração de ambiente
+ * Initialize env confi
  */
 export const loadConfig = (): AppConfig => {
-  //env default is production
-  const env = `${process.env.ENV}.env`;
+  //env default is development
+  const env = `${process.env.NODE_ENV || 'development'}.env`;
   const envConfig = dotenv.config({ path: env }).parsed;
   for (const key in envConfig) {
-    const value = process.env[key];
-    if (!value) {
-      console.error('Configuração de ambiente inválida');
-      throw new Error(`A variável de ambiente '${key}' não foi carregada`);
+    if (!process.env[key]) {
+      process.env[key] = envConfig[key];
+    } else {
+      envConfig[key] = process.env[key];
     }
   }
   const config = new AppConfig(envConfig);

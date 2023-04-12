@@ -12,19 +12,17 @@ const logger = new Logger('Main');
 loadConfig();
 
 async function bootstrap() {
-  const rabbitmqCfg = Configuration.config.rabbitmq;
-  //queue
-  const queueEmail = rabbitmqCfg.queueEmail;
+  const rmqCfg = Configuration.I.rabbitmq;
 
   //create app
   const app = await NestFactory.createMicroservice(AppModule, {
     transport: Transport.RMQ,
     options: {
-      urls: [rabbitmqCfg.toString()],
+      urls: [rmqCfg.toString()],
       //disable auto remove queue message
       noAck: false,
       //main queue
-      queue: queueEmail,
+      queue: rmqCfg.queue,
       //Durable (the queue will survive a broker restart)
       queueOptions: {
         durable: true,
@@ -34,12 +32,8 @@ async function bootstrap() {
   app.useGlobalInterceptors(new TimeoutInterceptor());
   //start app
   app.listen().then(() => {
-    logger.log(`Microservice runnnig env: ${process.env.ENV}`);
-    logger.log(
-      `RabbitMQ host ${Configuration.config.rabbitmq.host} queue ${queueEmail} `,
-    );
-    if (rabbitmqCfg.queues.length > 0)
-      console.table(Configuration.config.rabbitmq.queues);
+    logger.log(`Microservice runnnig env: ${process.env.NODE_ENV}`);
+    logger.log(`RabbitMQ host: ${rmqCfg.host} queue: ${rmqCfg.queue} `);
   });
 }
 bootstrap();

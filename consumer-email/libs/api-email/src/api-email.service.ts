@@ -2,7 +2,7 @@ import { Configuration } from '@infra/config/configuration';
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
 import { BaseService } from 'libs/core/base.service';
-import { EmailModel } from './dto/email.model';
+import { EmailData } from './interface/email.interface';
 
 @Injectable()
 export class ApiEmailService extends BaseService {
@@ -13,11 +13,9 @@ export class ApiEmailService extends BaseService {
 
   /**
    * Send email
-   * @param {any} body
    */
-  async sendEmail(body: EmailModel): Promise<any> {
+  async sendEmail(body: EmailData): Promise<any> {
     //TODO send email
-    //const headers = { };
     //super.post('email', body, headers);
     this.logger.log(`Email sent ${body.email}`);
   }

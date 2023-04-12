@@ -19,42 +19,18 @@
     "noFallthroughCasesInSwitch": false,
     "resolveJsonModule": true,
     "paths": {
-      "@infra": [
-        "src/infra"
-      ],
-      "@infra/*": [
-        "src/infra/*"
-      ],
-      "@config": [
-        "src/infra/config"
-      ],
-      "@config/*": [
-        "src/infra/config/*"
-      ],
-      "@rabbitmq": [
-        "src/infra/proxy/rabbit-mq"
-      ],
-      "@rabbitmq/*": [
-        "src/infra/proxy/rabbit-mq/*"
-      ],
-      "@shared": [
-        "src/shared/"
-      ],
-      "@shared/*": [
-        "src/shared/*"
-      ],
-      "@app/email": [
-        "libs/api-email/src"
-      ],
-      "@app/email/*": [
-        "libs/api-email/src/*"
-      ],
-      "@app/proxies": [
-        "libs/proxies/src"
-      ],
-      "@app/proxies/*": [
-        "libs/proxies/src/*"
-      ]
+      "@infra": ["src/infra"],
+      "@infra/*": ["src/infra/*"],
+      "@config": ["src/infra/config"],
+      "@config/*": ["src/infra/config/*"],
+      "@rabbitmq": ["src/infra/proxy/rabbit-mq"],
+      "@rabbitmq/*": ["src/infra/proxy/rabbit-mq/*"],
+      "@shared": ["src/shared/"],
+      "@shared/*": ["src/shared/*"],
+      "@app/email": ["libs/-email/src"],
+      "@app/email/*": ["libs/-email/src/*"],
+      "@app/proxies": ["libs/proxies/src"],
+      "@app/proxies/*": ["libs/proxies/src/*"]
     }
   }
 }

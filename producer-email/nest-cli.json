@@ -13,6 +13,25 @@
     }
   },
   "compilerOptions": {
-    "webpack": true
+    "webpack": false,
+    "plugins": [
+      {
+        "name": "@nestjs/swagger",
+        "options": {
+          "introspectComments": true,
+          "dtoFileNameSuffix": [
+            "dto",
+            "model",
+            "schema",
+            "output",
+            "entity",
+            "response",
+            "body",
+            "input",
+            "header"
+          ]
+        }
+      }
+    ]
   }
 }

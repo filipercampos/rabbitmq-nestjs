@@ -10,13 +10,7 @@ export class AppConfig {
   apiEmail: ApiConfig;
   constructor(config: any) {
     this.mongoUri = config.MONGO_URI;
-    this.rabbitmq = new RabbitMQConfig({
-      baseUrl: config.RABBITMQ_URL,
-      user: config.RABBITMQ_USER,
-      password: config.RABBITMQ_PASSWORD,
-      queueEmail: config.RABBITMQ_QUEUE_EMAIL,
-      host: config.RABBITMQ_HOST,
-    });
+    this.rabbitmq = new RabbitMQConfig(config);
     this.apiEmail = new ApiConfig({
       baseUrl: config.API_EMAIL_URL,
       token: config.API_EMAIL_TOKEN,

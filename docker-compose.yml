@@ -1,0 +1,96 @@
+version: '3.9'
+services:
+  consumer:
+    restart: unless-stopped
+    container_name: 'consumer-email'
+    build:
+      context: ./consumer-email
+      dockerfile: ./dockerfile
+    environment:
+      - NODE_ENV=development  
+      - RABBITMQ_URL=rabbitmq:5672
+      - MONGO_DB_URI=mongodb://root:secret@mongo:27017/?retryWrites=true&w=majority       
+    depends_on:
+      - rabbitmq
+      - mongo
+    links:
+      - mongo
+      - rabbitmq       
+    networks:
+      - rabbitmq_network        
+  producer:
+    restart: unless-stopped    
+    container_name: 'producer-email'    
+    build:
+      context: ./producer-email
+      dockerfile: ./dockerfile
+    environment:
+      - PORT=3333
+      - NODE_ENV=development
+      - RABBITMQ_URL=rabbitmq:5672
+      - MONGO_DB_URI=mongodb://root:secret@mongo:27017/?retryWrites=true&w=majority
+    ports:
+      # HTTP UI
+      - '3333:3333'
+    depends_on:
+      - rabbitmq
+      - mongo
+    links:
+      - mongo
+      - rabbitmq       
+    networks:
+      - rabbitmq_network        
+  mongo:
+    image: mongo
+    container_name: mongormq
+    restart: always
+    hostname: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: secret
+    ports:
+      - '27017:27017'
+    volumes:
+      - /d/Data/Docker/volumes/mongodb:/data/db
+    networks:
+      - rabbitmq_network       
+  rabbitmq:
+    restart: unless-stopped
+    container_name: 'rabbitmq'
+    hostname: rabbitmq
+    # image: rabbitmq:3.10.20-management
+    build:
+      context: .
+      dockerfile: dockerfile
+    ports:
+      # AMQP protocol port
+      - '5672:5672'
+      # HTTP management UI
+      - '15672:15672'
+    environment:
+      AMQP_URL: 'amqp://rabbitmq?connection_attempts=5&retry_delay=5'
+      RABBITMQ_DEFAULT_USER: rbadmin
+      RABBITMQ_DEFAULT_PASS: rbadmin
+      RABBITMQ_PLUGINS_DIR: /plugins:/usr/lib/rabbitmq/plugins
+    volumes:
+      - /c/docker/data/rabbitmq/data/:/var/lib/rabbitmq/
+      - /c/docker/data/rabbitmq/log/:/var/log/rabbitmq
+      - /c/docker/data/rabbitmq/enabled_plugins:/var/enabled_plugins
+      - /c/docker/data/rabbitmq/plugins:/var/rabbitmq/plugins
+      - ./bin/rabbitmq-start.sh/:/rabbitmq-start.sh
+      - ./bin/rabbitmq-host.sh/:/rabbitmq-host.sh
+    networks:
+      - rabbitmq_network
+    command:
+      - /bin/bash
+      - -c
+      - |
+        rabbitmq-server &
+        sleep 30 
+        #rabbitmqctl authenticate_user rbadmin rbadmin
+        #rabbitmqctl add_vhost rabbitmq
+        bash rabbitmq-host.sh
+        sleep infinity
+networks:
+  rabbitmq_network:
+    driver: bridge

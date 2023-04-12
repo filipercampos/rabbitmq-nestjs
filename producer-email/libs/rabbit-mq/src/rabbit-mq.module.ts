@@ -1,21 +1,23 @@
+import { RMQ_QUEUE_CONTACT } from '@app/rabbit-mq/infra/patterns/queue.constants';
 import { Module } from '@nestjs/common';
-import { RMQ_QUEUE_EMAIL } from '@shared/constants';
-import { RabbitMqEmailService } from '.';
 import { RabbitMqBuilderProxy } from './rabbit-mq-builder.proxy';
+import { RabbitMqContactService } from './rabbit-mq-contact.service';
+import { RabbitMqEmailService } from './rabbit-mq-email.service';
 
-@Module({
-  providers: [
-    {
-      provide: RMQ_QUEUE_EMAIL,
-      useFactory: () => {
-        return RabbitMqBuilderProxy.createEmailClientProxy();
-      },
-    },
-    RabbitMqEmailService,
-  ],
-  exports: [RabbitMqEmailService],
-})
 /**
  * Encapsulate Multiple ClientProxy
  */
+@Module({
+  providers: [
+    {
+      provide: RMQ_QUEUE_CONTACT,
+      useFactory: () => {
+        return RabbitMqBuilderProxy.registerContact();
+      },
+    },
+    RabbitMqContactService,
+    RabbitMqEmailService,
+  ],
+  exports: [RabbitMqContactService, RabbitMqEmailService],
+})
 export class RabbitMqModule {}
